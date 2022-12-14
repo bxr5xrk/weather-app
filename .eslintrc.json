@@ -21,8 +21,10 @@
     "rules": {
         "semi": "off",
         "@typescript-eslint/semi": "off",
+        "@typescript-eslint/comma-dangle": 0,
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/space-before-function-paren": 0,
+        "@typescript-eslint/strict-boolean-expressions": 0,
         "import/no-extraneous-dependencies": [
             "error",
             {

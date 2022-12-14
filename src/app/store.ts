@@ -1,10 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { weatherApi } from '../features/AddNewCity/AddNewCityService';
+import citiesSlice from '../features/cities/citiesSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer
-  }
+    [weatherApi.reducerPath]: weatherApi.reducer,
+    cities: citiesSlice,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(weatherApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
