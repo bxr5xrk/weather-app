@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { weatherApi } from '../features/AddNewCity/AddNewCityService';
+import { weatherApi } from '../features/cities/citiesService';
 import citiesSlice from '../features/cities/citiesSlice';
 
 export const store = configureStore({
@@ -7,8 +7,9 @@ export const store = configureStore({
     [weatherApi.reducerPath]: weatherApi.reducer,
     cities: citiesSlice,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(weatherApi.middleware),
+  // middleware: (getDefaultMiddleware) =>
+  //   ...getDefaultMiddleware().concat(weatherApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(weatherApi.middleware)
 });
 
 export type AppDispatch = typeof store.dispatch;

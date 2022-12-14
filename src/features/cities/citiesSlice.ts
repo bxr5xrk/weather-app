@@ -3,7 +3,7 @@ import { ICity } from '../../types';
 import { RootState } from '../../app/store';
 
 const items = localStorage.getItem('items');
-const getCities = items !== null ? JSON.parse(items) : [];
+export const getCities = items !== null ? JSON.parse(items) : [];
 
 type RequestState = 'pending' | 'fulfilled' | 'rejected'
 
