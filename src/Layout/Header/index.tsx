@@ -19,6 +19,7 @@ export default function Header() {
         onClick={() => navigate('/')}
         variant="h5"
         component="h2"
+        color={pathname === '/' ? 'primary' : 'black'}
       >
         weather app
       </Typography>
