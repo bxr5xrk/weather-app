@@ -1,80 +1,45 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import React, { useState } from 'react';
 import { Box, TextField, Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useAddNewCityQuery } from '../../features/AddNewCity/AddNewCityService';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCities, setCities } from '../../features/cities/citiesSlice';
-import { ICity } from '../../types';
-
-const addNewCity = (oldData: ICity[], newData: any) => {
-  const newCity = {
-    title: newData.name,
-    clouds: newData.clouds.all,
-    feelsLike: newData.main.feels_like,
-    tempMax: newData.main.temp_max,
-    tempMin: newData.main.temp_min,
-    weather: newData.weather[0].description,
-    icon: newData.weather[0].icon,
-    wind: newData.wind.speed,
-    id: newData.sys.id,
-  };
-
-  if (oldData.length === 0) {
-    return {
-      message: 'successfully added',
-      newData: [newCity],
-    };
-  } else {
-    if (oldData.map((i) => i.id).includes(newCity.id)) {
-      return {
-        message: 'city already includes',
-        newData: null,
-      };
-    }
-
-    const updatedData = [...oldData, newCity];
-
-    return {
-      message: 'successfully added',
-      newData: updatedData,
-    };
-  }
-};
+import { fetchApi } from '../../features/cities/citiesService';
+import { addNewCity } from '../../utils/addNewCity';
 
 export default function CreateNew() {
   const { cities } = useSelector(selectCities);
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
-  const [handleClick, setHandleClick] = useState(true);
-  const {
-    data: city,
-    isLoading,
-    isError,
-  } = useAddNewCityQuery(value, {
-    skip: handleClick,
-  });
+  const [message, setMessage] = useState<string | null>(null);
 
-  if (isError && !handleClick) {
-    setHandleClick(true);
-    setValue('');
-  }
-
-  useEffect(() => {
-    if (city !== undefined) {
-      const { newData } = addNewCity(cities, city);
-
-      if (newData != null) {
-        localStorage.setItem('items', JSON.stringify(newData));
-        dispatch(setCities(newData));
-      }
+  const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) {
+      e.preventDefault();
     }
-    setHandleClick(true);
-    setValue('');
-  }, [city]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setHandleClick(false);
+    if (value.length < 2) {
+      setMessage('Too short city name.');
+      return null;
+    }
+
+    const request = await fetchApi({ city: value });
+    if (request.message) {
+      setMessage(request.message);
+      return null;
+    }
+
+    const { newData } = addNewCity(cities, request);
+
+    if (newData != null) {
+      localStorage.setItem('items', JSON.stringify(newData));
+      dispatch(setCities(newData));
+
+      setMessage(`${value} city successfully added to list!`);
+    } else {
+      setMessage('Wrong data :( Please try again.');
+    }
+    setValue('');
   };
 
   return (
@@ -85,10 +50,10 @@ export default function CreateNew() {
       alignItems={'center'}
       paddingX={'400px'}
     >
-      <Box>
+      <Box minWidth="700px">
         <form
           style={{ width: '100%', position: 'relative' }}
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={async (e) => await handleSubmit(e)}
         >
           <TextField
             id="outlined-basic"
@@ -102,7 +67,7 @@ export default function CreateNew() {
           />
           <ArrowForwardIcon
             type="submit"
-            onClick={() => setHandleClick(false)}
+            onClick={async () => await handleSubmit()}
             style={{
               cursor: 'pointer',
               position: 'absolute',
@@ -112,10 +77,14 @@ export default function CreateNew() {
           />
         </form>
 
-        <Typography mt={'40px'} color="primary" variant="h5" component="h3">
-          {isError ? 'Wrong data :(' : null}
-          {isLoading ? 'Loading...' : null}
-          Enter the city
+        <Typography
+          textAlign="center"
+          mt={'40px'}
+          color="primary"
+          variant="h5"
+          component="h3"
+        >
+          {message ?? 'Enter the name of the city above.'}
         </Typography>
       </Box>
     </Box>
