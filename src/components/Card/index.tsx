@@ -1,41 +1,73 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
+import React from 'react';
 import ItemCard from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
+import { Coords } from '../../types';
+import { useNavigate } from 'react-router-dom';
+import Reload from '../components/Reload';
+import Delete from '../components/Delete';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
+interface CardProps {
+  title: string
+  weather: string
+  temp: number
+  wind: number
+  feelsLike: number
+  coords: Coords
+  id: number
+}
 
-export default function Card() {
+export default function Card({
+  title,
+  weather,
+  temp,
+  wind,
+  feelsLike,
+  coords,
+  id,
+}: CardProps) {
+  const navigate = useNavigate();
+
+  const goToLink = `details/lat=${coords.lat}&lon=${String(coords.lon)}`;
+
   return (
     <ItemCard sx={{ minWidth: 275 }}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
+        <Box display="flex" mb="20px" alignItems="flex-start" justifyContent="space-between">
+          <Box>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              {weather}
+            </Typography>
+            <Typography variant="h5" component="div">
+              {title}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap="15px">
+            <Reload coords={coords} />
+            <Delete id={id} />
+          </Box>
+        </Box>
+        <Box display="flex" justifyContent="space-between">
+          <Typography sx={{ mb: 1.5 }} color="primary">
+            {String(temp).slice(0, 1) !== '-' ? `+${temp}` : temp}°C
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            feels like: {feelsLike}°
+          </Typography>
+        </Box>
+        <Typography variant="body2">wind: {wind}m/s</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button onClick={() => navigate(goToLink)} size="small">
+          More
+        </Button>
       </CardActions>
     </ItemCard>
   );
