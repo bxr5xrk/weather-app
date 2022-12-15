@@ -1,9 +1,24 @@
 import { ICity } from '../types';
 
+interface ExpectedData {
+  name: string
+  main: {
+    feels_like: number
+    temp: number
+  }
+  weather: [{
+    description: string
+  }]
+  wind: {
+    speed: number
+  }
+  id: number
+}
+
 const returnUniqueItems = (data: ICity[]) =>
   data.filter((a, i) => data.findIndex((s: ICity) => a.id === s.id) === i);
 
-export const addNewCity = (oldData: ICity[], newData: any) => {
+export const addNewCity = (oldData: ICity[], newData: ExpectedData) => {
   const newCity = {
     title: newData.name,
     feelsLike: newData.main.feels_like,
@@ -27,7 +42,7 @@ export const addNewCity = (oldData: ICity[], newData: any) => {
     }
   } else {
     const copy = [...oldData];
-    const isIncludes = copy.find((i) => i.id === newCity.id)
+    const isIncludes = copy.find((i) => i.id === newCity.id);
 
     if (isIncludes) {
       const index = copy.indexOf(isIncludes);
