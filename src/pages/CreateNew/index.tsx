@@ -48,11 +48,11 @@ export default function CreateNew() {
       justifyContent={'center'}
       flexDirection="column"
       alignItems={'center'}
-      paddingX={'400px'}
+      width="100%"
     >
-      <Box minWidth="700px">
+      <Box>
         <form
-          style={{ width: '100%', position: 'relative' }}
+          style={{ position: 'relative' }}
           onSubmit={async (e) => await handleSubmit(e)}
         >
           <TextField
@@ -62,6 +62,7 @@ export default function CreateNew() {
             fullWidth
             color="primary"
             autoFocus
+            sx={{ width: '333px' }}
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
@@ -72,7 +73,7 @@ export default function CreateNew() {
               cursor: 'pointer',
               position: 'absolute',
               top: '15px',
-              right: '12px',
+              right: '29px',
             }}
           />
         </form>

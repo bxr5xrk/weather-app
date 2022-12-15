@@ -51,7 +51,7 @@ export default function CityDetails() {
           <Box
             width="100%"
             display="flex"
-            flexDirection="row"
+            sx={{ flexDirection: { md: 'row', xs: 'column' }, gap: { xs: '20px', md: '0' } }}
             justifyContent="space-between"
           >
             <Box display="flex" flexDirection="row" gap="50px">
