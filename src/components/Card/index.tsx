@@ -5,10 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
-import { Coords } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import Reload from '../components/Reload';
 import Delete from '../components/Delete';
+import { tempFormatter } from '../../utils/formatters';
 
 interface CardProps {
   title: string
@@ -16,7 +16,6 @@ interface CardProps {
   temp: number
   wind: number
   feelsLike: number
-  coords: Coords
   id: number
 }
 
@@ -26,12 +25,9 @@ export default function Card({
   temp,
   wind,
   feelsLike,
-  coords,
   id,
 }: CardProps) {
   const navigate = useNavigate();
-
-  const goToLink = `details/lat=${coords.lat}&lon=${String(coords.lon)}`;
 
   return (
     <ItemCard sx={{ minWidth: 275 }}>
@@ -50,22 +46,22 @@ export default function Card({
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" gap="15px">
-            <Reload coords={coords} />
+            <Reload id={id} />
             <Delete id={id} />
           </Box>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography sx={{ mb: 1.5 }} color="primary">
-            {String(temp).slice(0, 1) !== '-' ? `+${temp}` : temp}°C
+            {tempFormatter(temp)}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            feels like: {feelsLike}°
+            feels like: {tempFormatter(feelsLike)}
           </Typography>
         </Box>
         <Typography variant="body2">wind: {wind}m/s</Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => navigate(goToLink)} size="small">
+        <Button onClick={() => navigate(`details/${id}`)} size="small">
           More
         </Button>
       </CardActions>

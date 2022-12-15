@@ -1,41 +1,36 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Coords, IFullCity } from '../../types';
+import { ICityForecast } from '../../types';
 
 // secret
 const API_KEY = '4ff02532f7283368f82e4802cc107771';
+const baseUrl = 'https://api.openweathermap.org/data/2.5';
 
 export const weatherApi = createApi({
   reducerPath: 'weatherApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.openweathermap.org/data/2.5',
+    baseUrl,
   }),
   endpoints: (builder) => ({
-    getCityByCoords: builder.query<IFullCity, Coords>({
-      query: (data: Coords) =>
-        `/weather?lat=${data.lat}&lon=${data.lon}&units=metric&appid=${API_KEY}`,
-    }),
-    getCityForecast: builder.query({
-      query: (data: Coords) =>
-        `/forecast?lat=${data.lat}&lon=${data.lon}&units=metric&appid=${API_KEY}`,
+    getCityForecast: builder.query<ICityForecast, number>({
+      query: (id) =>
+        `forecast?cnt=9&id=${id}&units=metric&appid=${API_KEY}`
     }),
   }),
 });
 
-const baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
+export const { useGetCityForecastQuery } = weatherApi;
 
-export const fetchApi = async ({
-  coords,
+export const getCityWeatherService = async ({
+  id,
   city,
 }: {
-  coords?: Coords
+  id?: number
   city?: string
 }) =>
   await fetch(
-    `${baseUrl}?cnt=3&&${
-      coords !== undefined ? `lat=${coords.lat}&lon=${coords.lon}` : city !== undefined ? `q=${city}` : ''
+    `${baseUrl}/weather?${
+      id !== undefined ? `id=${id}` : city !== undefined ? `q=${city}` : ''
     }&units=metric&&appid=${API_KEY}`
   )
     .then(async (res) => await res.json())
     .then((data) => data);
-
-export const { useGetCityForecastQuery, useGetCityByCoordsQuery } = weatherApi;

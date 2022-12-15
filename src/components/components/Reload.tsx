@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { fetchApi } from '../../features/cities/citiesService';
+import { getCityWeatherService } from '../../features/cities/citiesService';
 import { addNewCity } from '../../utils/addNewCity';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCities, setCities } from '../../features/cities/citiesSlice';
-import { Coords } from '../../types';
 
 interface ReloadProps {
-  coords: Coords
+  id: number
 }
 
-export default function Reload({ coords }: ReloadProps) {
+export default function Reload({ id }: ReloadProps) {
   const { cities } = useSelector(selectCities);
   const dispatch = useDispatch();
 
   const onReload = async () => {
-    const request = await fetchApi({ coords });
+    const request = await getCityWeatherService({ id });
 
     const { newData } = addNewCity(cities, request);
     if (newData != null) {

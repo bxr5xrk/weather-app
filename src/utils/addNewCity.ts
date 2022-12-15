@@ -10,8 +10,7 @@ export const addNewCity = (oldData: ICity[], newData: any) => {
     temp: newData.main.temp,
     weather: newData.weather[0].description,
     wind: newData.wind.speed,
-    id: newData.sys.id,
-    coords: newData.coord,
+    id: newData.id,
   };
 
   if (oldData.length < 2) {
@@ -28,10 +27,11 @@ export const addNewCity = (oldData: ICity[], newData: any) => {
     }
   } else {
     const copy = [...oldData];
-    const index = copy.indexOf(newCity);
+    const isIncludes = copy.find((i) => i.id === newCity.id)
 
-    if (index !== -1) {
-      copy[index] = newCity;
+    if (isIncludes) {
+      const index = copy.indexOf(isIncludes);
+      copy.splice(index, 1, newCity);
 
       return {
         newData: returnUniqueItems(copy),
