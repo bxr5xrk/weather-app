@@ -66,7 +66,7 @@ export default function Card({
         <Typography variant="body2">wind: {wind}m/s</Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => navigate(`details/${id}`)} size="small">
+        <Button data-testid="button" onClick={() => navigate(`details/${id}`)} size="small">
           More
         </Button>
       </CardActions>

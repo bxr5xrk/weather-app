@@ -13,8 +13,10 @@ export default function CityDetails() {
 
   const weather = data?.list[0];
 
+  document.title = data ? data.city.name : '';
+
   return (
-    <Box width="100%" height="100%">
+    <Box data-testid="details" width="100%" height="100%">
       {isLoading
         ? (
         <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
@@ -41,7 +43,7 @@ export default function CityDetails() {
               height="80px"
             />
           </Box>
-          <Typography color="primary" variant="h1" component="h2">
+          <Typography data-testid="title" color="primary" variant="h1" component="h2">
             {data.city.name}, {data.city.country}
           </Typography>
 
