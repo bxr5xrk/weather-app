@@ -5,16 +5,12 @@ import { RootState } from '../../app/store';
 const items = localStorage.getItem('items');
 export const getCities = items !== null ? JSON.parse(items) : [];
 
-type RequestState = 'pending' | 'fulfilled' | 'rejected'
-
 interface CitiesState {
   cities: ICity[]
-  status: RequestState
 }
 
 const initialState: CitiesState = {
   cities: getCities,
-  status: 'pending',
 };
 
 export const citiesSlice = createSlice({

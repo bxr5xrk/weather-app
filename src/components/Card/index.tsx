@@ -6,8 +6,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Reload from '../components/Reload';
-import Delete from '../components/Delete';
+import Reload from './components/Reload';
+import Delete from './components/Delete';
 import { tempFormatter } from '../../utils/formatters';
 
 interface CardProps {
@@ -32,7 +32,12 @@ export default function Card({
   return (
     <ItemCard sx={{ minWidth: 275 }}>
       <CardContent>
-        <Box display="flex" mb="20px" alignItems="flex-start" justifyContent="space-between">
+        <Box
+          display="flex"
+          mb="20px"
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
           <Box>
             <Typography
               sx={{ fontSize: 14 }}

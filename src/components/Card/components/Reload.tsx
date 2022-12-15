@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { getCityWeatherService } from '../../features/cities/citiesService';
-import { addNewCity } from '../../utils/addNewCity';
+import { getCityWeatherService } from '../../../features/cities/citiesService';
+import { addNewCity } from '../../../utils/addNewCity';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCities, setCities } from '../../features/cities/citiesSlice';
+import { selectCities, setCities } from '../../../features/cities/citiesSlice';
 
 interface ReloadProps {
   id: number

@@ -1,7 +1,7 @@
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCities, setCities } from '../../features/cities/citiesSlice';
+import { selectCities, setCities } from '../../../features/cities/citiesSlice';
 
 interface DeleteProps {
   id: number
