@@ -26,7 +26,6 @@ export default function ListItems() {
         <Card
           key={i.id}
           id={i.id}
-          coords={i.coords}
           title={i.title}
           weather={i.weather}
           temp={i.temp}

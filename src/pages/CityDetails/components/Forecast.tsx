@@ -10,22 +10,15 @@ import {
 import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCityForecastQuery } from '../../../features/cities/citiesService';
-import { Main, Weather } from '../../../types';
+import { tempFormatter } from '../../../utils/formatters';
 
 function createData(
   time: string,
   temp: number,
   description: string,
-  id: number,
+  id: number
 ) {
   return { time, temp, description, id };
-}
-
-interface ReceivedData {
-  dt_txt: string
-  main: Main
-  weather: Weather[]
-  dt: number
 }
 
 interface TableData {
@@ -51,24 +44,25 @@ const cellData = [
 ];
 
 export default function Forecast() {
-  const { lat, lon } = useParams();
-  const { data } = useGetCityForecastQuery<{ data: { list: ReceivedData[] } }>({
-    lat: Number(lat) ?? 0,
-    lon: Number(lon) ?? 0,
-  });
-  const forecast = data?.list.slice(0, 8);
+  const { id } = useParams();
+  const { data } = useGetCityForecastQuery(Number(id));
+  const forecast = data?.list;
 
   const rows: TableData[] = useMemo(() => [], [data]);
 
-  forecast?.map((i) =>
-    rows.push(
-      createData(
-        i.dt_txt.split(' ')[1],
-        i.main.temp,
-        i.weather[0].description,
-        i.dt
-      )
-    )
+  useMemo(
+    () =>
+      forecast?.map((i) =>
+        rows.push(
+          createData(
+            i.dt_txt.split(' ')[1],
+            i.main.temp,
+            i.weather[0].description,
+            i.dt
+          )
+        )
+      ),
+    [data]
   );
 
   return (
@@ -88,7 +82,7 @@ export default function Forecast() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell>{row.time}</TableCell>
-              <TableCell>{String(row.temp).slice(0, 1) !== '-' ? `+${row.temp}` : row.temp}°C</TableCell>
+              <TableCell>{tempFormatter(row.temp)}</TableCell>
               <TableCell>{row.description}</TableCell>
             </TableRow>
           ))}

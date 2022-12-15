@@ -4,7 +4,7 @@ import { Box, TextField, Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCities, setCities } from '../../features/cities/citiesSlice';
-import { fetchApi } from '../../features/cities/citiesService';
+import { getCityWeatherService } from '../../features/cities/citiesService';
 import { addNewCity } from '../../utils/addNewCity';
 
 export default function CreateNew() {
@@ -23,7 +23,7 @@ export default function CreateNew() {
       return null;
     }
 
-    const request = await fetchApi({ city: value });
+    const request = await getCityWeatherService({ city: value });
     if (request.message) {
       setMessage(request.message);
       return null;

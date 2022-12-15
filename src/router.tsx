@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
         element: <CreateNew />,
       },
       {
-        path: 'details/lat=:lat&lon=:lon',
+        path: 'details/:id',
         element: <CityDetails />,
       },
     ],

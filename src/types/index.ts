@@ -1,8 +1,3 @@
-export interface Coords {
-  lat: number
-  lon: number
-}
-
 export interface ICity {
   title: string
   feelsLike: number
@@ -10,7 +5,6 @@ export interface ICity {
   weather: string
   wind: number
   id: number
-  coords: Coords
 }
 
 export interface Weather {
@@ -39,4 +33,16 @@ export interface IFullCity {
   sys: Sys
   wind: Wind
   visibility: number
+  dt_txt: string
+  dt: number
+}
+
+interface CityDetails {
+  name: string
+  country: string
+}
+
+export interface ICityForecast {
+  list: IFullCity[]
+  city: CityDetails
 }
